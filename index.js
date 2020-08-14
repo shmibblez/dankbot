@@ -11,13 +11,16 @@ client.on("message", msg => {
         default:
         case 'help':
             msg.reply('whats good homie' +
-                '\n\ncommands are seperated by spaces, for example: `!dankbot fry` deepfries the latest picture in the chat' +
+                '\n\ncommands are seperated by spaces, for example: `!dankbot fry brutal` deepfries the latest picture in the chat' +
                 '\n\nhere are some commands:' +
-                '\n - `deepfry`, with sub-commands `mild`, `medium`, and `brutal` to determine how long to fry the image for, default is `medium`' +
+                '\n  - `deepfry`' +
+                '\n    - `mild`' +
+                '\n    - `medium` (default)' +
+                '\n    - `brutal`' +
                 '\n - `help`')
             break;
         case 'fry':
-            msg.reply('currently the fryer is out of service, it\'s coming soon though')
+            msg.reply('this feature is coming soon')
             break;
     }
     return Promise.resolve();
