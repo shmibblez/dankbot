@@ -2,18 +2,22 @@
   "name": "dankify-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "lint": "tslint --project tsconfig.json",
+    "build": "tsc",
+    "start": "node lib/index.js",
+    "dev": "nodemon lib/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "^12.2.0"
+    "discord.js": "^12.2.0",
+    "jimp": "^0.16.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "@types/node": "^14.0.27",
+    "typescript": "^3.9.7"
   }
 }
