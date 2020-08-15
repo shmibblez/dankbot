@@ -21,7 +21,7 @@ client.on("message", msg => {
                 '\n - `help`')
             break;
         case 'fry':
-            msg.reply('this feature is coming sooon')
+            msg.reply('this feature is coming soooooon')
             break;
     }
     return Promise.resolve();
