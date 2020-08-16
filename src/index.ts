@@ -84,7 +84,7 @@ async function deepFry(msg: Discord.Message) {
     console.timeEnd('jimping')
 
     console.log('sending image')
-    msg.reply('', {
+    msg.reply('nice', {
         files: [imgPath]
     })
     return;
