@@ -60,7 +60,7 @@ async function deepFry(msg: Discord.Message) {
     const imgPath = __dirname + '/toasty' + randomBytes(10).toString('hex') + '.png';
     console.log('new image path: ' + imgPath)
     console.time('jimping')
-    const img = await Jimp.read(url, (e, jimage) => {
+    await Jimp.read(url, (e, jimage) => {
         if (e) {
             console.error(e)
             msg.reply('something failed homie, probably means no images sent or something, in other words stop wasting my time, yo')
@@ -72,23 +72,20 @@ async function deepFry(msg: Discord.Message) {
             .contrast(0.95)
             .posterize(1)
             .write(imgPath)
-        console.log('file: ' + inspect(readFile(imgPath, { encoding: 'utf-8' }, (err, data) => {
-            if (err) {
-                console.log(err)
-                return;
-            }
-            console.log('file data:\n' + inspect(data))
-        })))
+        // console.log('file: ' + inspect(readFile(imgPath, { encoding: 'utf-8' }, (err, data) => {
+        //     if (err) {
+        //         console.log(err)
+        //         return;
+        //     }
+        //     console.log('file data:\n' + inspect(data))
+        // })))
+        return Promise.resolve();
     })
     console.timeEnd('jimping')
-    console.log('jimp image: ' + img)
 
     console.log('sending image')
-    msg.channel.send({
-        files: [{
-            attachment: imgPath,
-            name: 'dankified_' + name
-        }]
+    msg.reply('', {
+        files: [imgPath]
     })
     return;
 }
