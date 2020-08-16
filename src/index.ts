@@ -39,10 +39,14 @@ async function deepFry(msg: Discord.Message) {
     const messages = await msg.channel.messages.fetch({ limit: 5 }, false)
     // await msg.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ['time'] })
     console.log('got messages:\n' + inspect(messages))
-    let url!: string | undefined;
+    let name: string | undefined
+    let url: string | undefined;
     for (const m of messages) {
         url = m[1].attachments.first()?.url
-        if (url) break;
+        if (url) {
+            name = m[1].attachments.first()?.name
+            break;
+        }
     }
     if (!url) {
         console.log('no url found')
@@ -60,22 +64,22 @@ async function deepFry(msg: Discord.Message) {
             msg.reply('something failed homie, probably means no images sent or something, in other words stop wasting my time, yo')
             return;
         }
+        console.log('processing image')
         jimage
             .pixelate(40)
             .contrast(0.95)
             .posterize(1)
             .write(imgPath)
     })
-    if (img) {
-        msg.channel.send({
-            files: [{
-                attachment: imgPath,
-                name: 'epic'
-            }]
-        })
-        return;
-    }
+    console.log('jimp image: ' + img)
 
-
+    console.log('sending image')
+    msg.channel.send({
+        files: [{
+            attachment: imgPath,
+            name: 'dankified_' + name
+        }]
+    })
+    return;
 }
 client.login(process.env.login_key);
