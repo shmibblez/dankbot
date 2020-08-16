@@ -63,9 +63,13 @@ async function deepFry(msg: Discord.Message) {
             console.log('processing image')
 
             jimage
-                .pixelate(jimage.bitmap.width / 2)
-                .contrast(0.95)
-                .posterize(2)
+                .quality(70)
+                .pixelate(1.5)
+                .quality(70)
+                .contrast(0.7)
+                .color([
+                    { apply: 'saturate', params: [70] },
+                ])
                 .write(imgPath)
         })
         .catch(err => {
