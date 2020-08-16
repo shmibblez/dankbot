@@ -61,11 +61,10 @@ async function deepFry(msg: Discord.Message) {
     await Jimp.read(url).
         then(jimage => {
             console.log('processing image')
-
             jimage
-                .quality(70)
-                .contrast(.7)
-                .posterize(2)
+                .quality(20)
+                .contrast(0.7)
+                .posterize(1)
                 .write(imgPath)
         })
         .catch(err => {
