@@ -22,12 +22,13 @@ client.on("message", async msg => {
         default:
         case 'help':
             msg.reply('whats good homie' +
+                // '\n\ncommands are seperated by spaces, for example: \n`!dankbot fry brutal` deepfries the latest picture in the chat brutally' +
                 '\n\ncommands are seperated by spaces, for example: \n`!dankbot fry brutal` deepfries the latest picture in the chat brutally' +
-                '\nahere are some commands:' +
+                '\nhere are some commands:' +
                 '\n  - `fry`' +
-                '\n    - `mild`' +
-                '\n    - `medium` (default)' +
-                '\n    - `brutal`' +
+                // '\n    - `mild`' +
+                // '\n    - `medium` (default)' +
+                // '\n    - `brutal`' +
                 '\n - `help`')
             break;
     }
@@ -50,7 +51,7 @@ async function deepFry(msg: Discord.Message) {
     if (!url) {
         console.log('no url found')
         // msg.reply('no image found')
-        msg.reply('no images found, not cool bro')
+        msg.reply('no images found')
         return;
     }
     console.log('url: ' + url)
@@ -70,7 +71,7 @@ async function deepFry(msg: Discord.Message) {
         })
         .catch(err => {
             console.error(err)
-            msg.reply('something failed homie, probably means no images sent or something, in other words stop wasting my time, yo')
+            msg.reply('something failed homie')
             return;
         })
     console.timeEnd('jimping')
