@@ -1,6 +1,7 @@
 // const Discord = require('discord.js')
 import Discord, { TextChannel } from 'discord.js'
 import { inspect } from 'util'
+import { readFile } from 'fs'
 import Jimp from 'jimp'
 import { randomBytes } from 'crypto'
 const client = new Discord.Client()
@@ -58,6 +59,7 @@ async function deepFry(msg: Discord.Message) {
 
     const imgPath = __dirname + '/toasty' + randomBytes(10).toString('hex') + '.png';
     console.log('new image path: ' + imgPath)
+    console.time('jimping')
     const img = await Jimp.read(url, (e, jimage) => {
         if (e) {
             console.error(e)
@@ -70,7 +72,15 @@ async function deepFry(msg: Discord.Message) {
             .contrast(0.95)
             .posterize(1)
             .write(imgPath)
+        console.log('file: ' + inspect(readFile(imgPath, { encoding: 'utf-8' }, (err, data) => {
+            if (err) {
+                console.log(err)
+                return;
+            }
+            console.log('file data:\n' + inspect(data))
+        })))
     })
+    console.timeEnd('jimping')
     console.log('jimp image: ' + img)
 
     console.log('sending image')
