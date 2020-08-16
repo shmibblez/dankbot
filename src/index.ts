@@ -61,8 +61,9 @@ async function deepFry(msg: Discord.Message) {
     await Jimp.read(url).
         then(jimage => {
             console.log('processing image')
+
             jimage
-                .pixelate(40)
+                .pixelate(Math.trunc(jimage.bitmap.width * 0.9))
                 .contrast(0.95)
                 .posterize(1)
                 .write(imgPath)
