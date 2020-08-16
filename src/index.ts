@@ -35,7 +35,7 @@ client.on("message", async msg => {
 })
 
 async function deepFry(msg: Discord.Message) {
-    const filter = (m: Discord.Message) => m.attachments.size > 0 && m.attachments.first()?.url != null;
+    const filter = (m: Discord.Message) => m.attachments.size > 0 && m.attachments.first()?.url;
     console.log('getting messages')
     const messages = await msg.channel.messages.fetch({ limit: 1 }, false)
     // await msg.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ['time'] })
