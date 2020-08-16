@@ -63,9 +63,9 @@ async function deepFry(msg: Discord.Message) {
             console.log('processing image')
 
             jimage
-                .pixelate(Math.trunc(jimage.bitmap.width * 0.9))
+                .pixelate(jimage.bitmap.width / 2)
                 .contrast(0.95)
-                .posterize(1)
+                .posterize(2)
                 .write(imgPath)
         })
         .catch(err => {
