@@ -57,7 +57,7 @@ async function deepFry(msg: Discord.Message) {
     const img = await Jimp.read(url, (e, jimage) => {
         if (e) {
             console.error(e)
-            msg.reply('something failed homie')
+            msg.reply('something failed homie, probably means no images sent or something, in other words stop wasting my time, yo')
             return;
         }
         jimage
