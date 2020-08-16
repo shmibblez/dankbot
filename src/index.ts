@@ -1,5 +1,5 @@
 // const Discord = require('discord.js')
-import Discord from 'discord.js'
+import Discord, { TextChannel } from 'discord.js'
 import { inspect } from 'util'
 import Jimp from 'jimp'
 import { randomBytes } from 'crypto'
@@ -10,6 +10,7 @@ client.on("ready", () => {
 })
 client.on("message", async msg => {
     if (!msg.content.startsWith('!dankbot')) return;
+    if (msg.channel.type != 'text') return;
     const commands = msg.content.split(' ');
     switch (commands[1]) {
         case 'fry':
@@ -36,7 +37,8 @@ client.on("message", async msg => {
 async function deepFry(msg: Discord.Message) {
     const filter = (m: Discord.Message) => m.attachments.size > 0;
     console.log('getting messages')
-    const messages = await msg.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ['time'] })
+    const messages = await msg.channel.messages.fetch({ limit: 10 }, false)
+    // await msg.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ['time'] })
     console.log('got messages:\n' + inspect(messages))
     let url!: string;
     for (const m of messages) {
