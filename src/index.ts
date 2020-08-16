@@ -25,7 +25,7 @@ client.on("message", async msg => {
             break;
         case 'fry':
             // msg.reply('this feature is coming soooooon')
-            deepFry(msg)
+            await deepFry(msg)
             break;
     }
     return Promise.resolve();
