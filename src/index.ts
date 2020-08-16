@@ -65,6 +65,7 @@ async function deepFry(msg: Discord.Message) {
                 .quality(20)
                 .contrast(0.7)
                 .posterize(1)
+                .pixelate(1.3)
                 .write(imgPath)
         })
         .catch(err => {
