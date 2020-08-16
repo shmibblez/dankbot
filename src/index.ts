@@ -35,7 +35,8 @@ client.on("message", async msg => {
 
 async function deepFry(msg: Discord.Message) {
     const filter = (m: Discord.Message) => m.attachments.size > 0;
-    const messages = await msg.channel.awaitMessages(filter, { max: 1 })
+    console.log('getting messages')
+    const messages = await msg.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ['time'] })
     console.log('got messages:\n' + inspect(messages))
     let url!: string;
     for (const m of messages) {
@@ -43,6 +44,7 @@ async function deepFry(msg: Discord.Message) {
         if (url) break;
     }
     if (!url) {
+        console.log('no url found')
         msg.reply('no image found')
         return;
     }
