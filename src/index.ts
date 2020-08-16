@@ -31,7 +31,6 @@ client.on("message", async msg => {
                 '\n - `help`')
             break;
     }
-
     return Promise.resolve();
 })
 
@@ -39,7 +38,6 @@ async function deepFry(msg: Discord.Message) {
     console.log('getting messages')
     const messages = await msg.channel.messages.fetch({ limit: 5 }, false)
     // await msg.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ['time'] })
-    console.log('got messages:\n' + inspect(messages))
     let name: string | undefined
     let url: string | undefined;
     for (const m of messages) {
@@ -60,27 +58,20 @@ async function deepFry(msg: Discord.Message) {
     const imgPath = __dirname + '/toasty' + randomBytes(10).toString('hex') + '.png';
     console.log('new image path: ' + imgPath)
     console.time('jimping')
-    await Jimp.read(url, (e, jimage) => {
-        if (e) {
-            console.error(e)
+    await Jimp.read(url).
+        then(jimage => {
+            console.log('processing image')
+            jimage
+                .pixelate(40)
+                .contrast(0.95)
+                .posterize(1)
+                .write(imgPath)
+        })
+        .catch(err => {
+            console.error(err)
             msg.reply('something failed homie, probably means no images sent or something, in other words stop wasting my time, yo')
             return;
-        }
-        console.log('processing image')
-        jimage
-            .pixelate(40)
-            .contrast(0.95)
-            .posterize(1)
-            .write(imgPath)
-        // console.log('file: ' + inspect(readFile(imgPath, { encoding: 'utf-8' }, (err, data) => {
-        //     if (err) {
-        //         console.log(err)
-        //         return;
-        //     }
-        //     console.log('file data:\n' + inspect(data))
-        // })))
-        return Promise.resolve();
-    })
+        })
     console.timeEnd('jimping')
 
     console.log('sending image')
