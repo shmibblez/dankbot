@@ -76,14 +76,13 @@ async function deepFry(msg: Discord.Message) {
 
     const mimeType = mime.lookup(fileExt)
     if (mimeType === 'image/gif') {
-        deepfryGif({ url: url, filePath: imgPath, msg: msg })
+        await deepfryGif({ url: url, filePath: imgPath, msg: msg })
     } else if (mimeType.toString().includes('image')) {
-        deepFryImg({ url: url, filePath: imgPath, msg: msg })
+        await deepFryImg({ url: url, filePath: imgPath, msg: msg })
     } else {
         msg.reply('file type not supported, only support images and gifs')
     }
     console.timeEnd('jimping')
-    console.log('sending image')
     return;
 }
 /**
@@ -93,7 +92,7 @@ async function deepFry(msg: Discord.Message) {
  * @param msg message that sent command
  * @returns whether successfully fried image
  */
-function deepFryImg({ url, filePath: path, msg }: { url: string, filePath: string, msg: Discord.Message }): Promise<boolean> {
+function deepFryImg({ url, filePath, msg }: { url: string, filePath: string, msg: Discord.Message }): Promise<boolean> {
     console.log('frying image')
     return Jimp.read(url).
         then(jimage => {
@@ -103,9 +102,11 @@ function deepFryImg({ url, filePath: path, msg }: { url: string, filePath: strin
                 .contrast(0.7)
                 .posterize(1)
                 .pixelate(1.7)
-                .write(path)
+                .write(filePath)
+            //
+            console.log('replying with image')
             msg.reply('nice', {
-                files: [path]
+                files: [filePath]
             })
             return true;
         })
@@ -145,6 +146,7 @@ async function deepfryGif({ url, filePath, msg }: { url: string, filePath: strin
             msg.reply('failed to fry gif')
             throw e
         })
+        console.log('replying with gif')
         msg.reply('nice', {
             files: [filePath]
         })
