@@ -138,15 +138,17 @@ async function deepfryGif({ url, filePath, msg }: { url: string, filePath: strin
             msg.reply('something failed homie')
             return false;
         })
-    return GifUtil.read(filePath, GifEncoder())
+    return GifUtil.read(filePath)
         .then(async gif => {
             const frames = gif.frames
-            if (frames.length > 10000) {
+            if (frames.length > 1000) {
                 msg.reply('too many frames')
                 return false;
             }
             const friedFrames: GifFrame[] = []
+            console.log('total frames: ' + frames.length)
             for (const frame of frames) {
+                console.log('frying frame')
                 const friedJimp = (GifUtil.shareAsJimp(Jimp, frame) as Jimp).quality(20)
                     .contrast(0.7)
                     .posterize(1)
