@@ -2,6 +2,7 @@
 import Discord, { TextChannel } from 'discord.js'
 import { inspect } from 'util'
 import { readFile } from 'fs'
+const GifEncoder = require('gif-encoder')
 import { GifUtil, GifFrame } from 'gifwrap'
 import { extname } from 'path'
 import * as mime from 'mime-types'
@@ -40,7 +41,7 @@ client.on("message", async msg => {
 
 async function deepFry(msg: Discord.Message) {
     console.log('getting messages')
-    const messages = await msg.channel.messages.fetch({ limit: 5 }, false)
+    const messages = await msg.channel.messages.fetch({ limit: 10 }, false)
     // await msg.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ['time'] })
     let name: string | undefined
     let url: string | undefined | null;
@@ -137,7 +138,7 @@ async function deepfryGif({ url, filePath, msg }: { url: string, filePath: strin
             msg.reply('something failed homie')
             return false;
         })
-    return GifUtil.read(filePath)
+    return GifUtil.read(filePath, GifEncoder())
         .then(async gif => {
             const frames = gif.frames
             if (frames.length > 10000) {
