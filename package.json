@@ -14,8 +14,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@types/mime-types": "^2.1.0",
     "discord.js": "^12.2.0",
-    "jimp": "^0.16.0"
+    "jimp": "^0.16.0",
+    "mime-types": "^2.1.27"
   },
   "devDependencies": {
     "@types/node": "^14.0.27",

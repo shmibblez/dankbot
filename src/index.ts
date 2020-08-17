@@ -2,6 +2,7 @@
 import Discord, { TextChannel } from 'discord.js'
 import { inspect } from 'util'
 import { readFile } from 'fs'
+import * as mime from 'mime-types'
 import Jimp from 'jimp'
 import { randomBytes } from 'crypto'
 const client = new Discord.Client()
@@ -42,9 +43,9 @@ async function deepFry(msg: Discord.Message) {
     let name: string | undefined
     let url: string | undefined | null;
     for (const m of messages) {
-        url = m[1].attachments.first()?.url
+        url = m[1].attachments?.first()?.url
         if (url) {
-            name = m[1].attachments.first()?.name
+            name = m[1].attachments?.first()?.name
             break;
         }
         url = m[1].embeds[0]?.image?.url
@@ -66,12 +67,13 @@ async function deepFry(msg: Discord.Message) {
     }
     console.log('url: ' + url)
 
-    const imgPath = __dirname + '/toasty' + randomBytes(10).toString('hex') + '.png';
+    let imgPath = __dirname + '/toasty' + randomBytes(10).toString('hex');
     console.log('new image path: ' + imgPath)
     console.time('jimping')
     await Jimp.read(url).
         then(jimage => {
             console.log('processing image')
+            imgPath += mime.extension(jimage.getMIME())
             jimage
                 .quality(20)
                 .contrast(0.7)
