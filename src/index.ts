@@ -125,34 +125,39 @@ function deepFryImg({ url, filePath, msg }: { url: string, filePath: string, msg
  */
 async function deepfryGif({ url, filePath, msg }: { url: string, filePath: string, msg: Discord.Message }): Promise<boolean> {
     console.log('frying gif')
-    return GifUtil.read(url).then(async gif => {
-        const frames = gif.frames
-        if (frames.length > 10000) {
-            msg.reply('too many frames')
-            return false;
-        }
-        const friedFrames: GifFrame[] = []
-        for (const frame of frames) {
-            const friedJimp = (GifUtil.shareAsJimp(Jimp, frame) as Jimp).quality(20)
-                .contrast(0.7)
-                .posterize(1)
-                .pixelate(1.7)
-            friedFrames.push(new GifFrame(friedJimp.bitmap))
-        }
-        await GifUtil.write(filePath, friedFrames).then(gif => {
-            console.log('gif:\n' + inspect(gif))
-        }).catch(e => {
-            console.error(e)
+    return GifUtil.read(url)
+        .then(async gif => {
+            const frames = gif.frames
+            if (frames.length > 10000) {
+                msg.reply('too many frames')
+                return false;
+            }
+            const friedFrames: GifFrame[] = []
+            for (const frame of frames) {
+                const friedJimp = (GifUtil.shareAsJimp(Jimp, frame) as Jimp).quality(20)
+                    .contrast(0.7)
+                    .posterize(1)
+                    .pixelate(1.7)
+                friedFrames.push(new GifFrame(friedJimp.bitmap))
+            }
+            await GifUtil.write(filePath, friedFrames).then(gif => {
+                console.log('gif:\n' + inspect(gif))
+            }).catch(e => {
+                console.error(e)
+                msg.reply('failed to fry gif')
+                throw e
+            })
+            console.log('replying with gif')
+            msg.reply('nice', {
+                files: [filePath]
+            })
+            return true
+        })
+        .catch(e => {
+            console.log(e)
             msg.reply('failed to fry gif')
-            throw e
+            return false
         })
-        console.log('replying with gif')
-        msg.reply('nice', {
-            files: [filePath]
-        })
-
-        return true
-    })
 
 }
 client.login(process.env.login_key);
