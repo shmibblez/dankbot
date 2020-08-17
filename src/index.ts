@@ -69,7 +69,7 @@ async function deepFry(msg: Discord.Message) {
     }
     console.log('url: ' + url)
 
-    const fileExt = extname(url) || '.jpg'
+    const fileExt = extname(url ?? '') || '.jpg'
     const imgPath = __dirname + '/toasty' + randomBytes(10).toString('hex') + fileExt;
     console.log('new image path: ' + imgPath)
     console.time('jimping')
@@ -138,7 +138,9 @@ async function deepfryGif({ url, filePath, msg }: { url: string, filePath: strin
                 .pixelate(1.7)
             friedFrames.push(new GifFrame(friedJimp.bitmap))
         }
-        await GifUtil.write(filePath, friedFrames).catch(e => {
+        await GifUtil.write(filePath, friedFrames).then(gif => {
+            console.log('gif:\n' + inspect(gif))
+        }).catch(e => {
             console.error(e)
             msg.reply('failed to fry gif')
             throw e
