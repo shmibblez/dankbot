@@ -125,7 +125,19 @@ function deepFryImg({ url, filePath, msg }: { url: string, filePath: string, msg
  */
 async function deepfryGif({ url, filePath, msg }: { url: string, filePath: string, msg: Discord.Message }): Promise<boolean> {
     console.log('frying gif')
-    return GifUtil.read(url)
+    await Jimp.read(url).
+        then(jimage => {
+            console.log('processing image')
+            jimage
+                .write(filePath)
+            return true;
+        })
+        .catch(err => {
+            console.error(err)
+            msg.reply('something failed homie')
+            return false;
+        })
+    return GifUtil.read(filePath)
         .then(async gif => {
             const frames = gif.frames
             if (frames.length > 10000) {
