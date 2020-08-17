@@ -73,7 +73,7 @@ async function deepFry(msg: Discord.Message) {
     await Jimp.read(url).
         then(jimage => {
             console.log('processing image')
-            imgPath += mime.extension(jimage.getMIME())
+            imgPath += '.' + mime.extension(jimage.getMIME())
             jimage
                 .quality(20)
                 .contrast(0.7)
