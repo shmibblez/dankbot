@@ -2,6 +2,8 @@
 import Discord, { TextChannel } from 'discord.js'
 import { inspect } from 'util'
 import { readFile } from 'fs'
+import { GifUtil, GifFrame } from 'gifwrap'
+import { extname } from 'path'
 import * as mime from 'mime-types'
 import Jimp from 'jimp'
 import { randomBytes } from 'crypto'
@@ -67,31 +69,86 @@ async function deepFry(msg: Discord.Message) {
     }
     console.log('url: ' + url)
 
-    let imgPath = __dirname + '/toasty' + randomBytes(10).toString('hex');
+    const fileExt = extname(url) || '.jpg'
+    const imgPath = __dirname + '/toasty' + randomBytes(10).toString('hex') + fileExt;
     console.log('new image path: ' + imgPath)
     console.time('jimping')
-    await Jimp.read(url).
+
+    const mimeType = mime.lookup(fileExt)
+    if (mimeType === 'image/gif') {
+        deepfryGif({ url: url, filePath: imgPath, msg: msg })
+    } else if (mimeType.toString().includes('image')) {
+        deepFryImg({ url: url, filePath: imgPath, msg: msg })
+    } else {
+        msg.reply('file type not supported, only support images and gifs')
+    }
+    console.timeEnd('jimping')
+    console.log('sending image')
+    return;
+}
+/**
+ * 
+ * @param url url of image
+ * @param path path to write file to
+ * @param msg message that sent command
+ * @returns whether successfully fried image
+ */
+function deepFryImg({ url, filePath: path, msg }: { url: string, filePath: string, msg: Discord.Message }): Promise<boolean> {
+    console.log('frying image')
+    return Jimp.read(url).
         then(jimage => {
             console.log('processing image')
-            imgPath += '.' + mime.extension(jimage.getMIME())
             jimage
                 .quality(20)
                 .contrast(0.7)
                 .posterize(1)
                 .pixelate(1.7)
-                .write(imgPath)
+                .write(path)
+            msg.reply('nice', {
+                files: [path]
+            })
+            return true;
         })
         .catch(err => {
             console.error(err)
             msg.reply('something failed homie')
-            return;
+            return false;
         })
-    console.timeEnd('jimping')
+}
+/**
+ * 
+ * @param url url of image
+ * @param path path to write file to
+ * @param msg message that sent command
+ * @returns whether successfully fried image
+ */
+async function deepfryGif({ url, filePath, msg }: { url: string, filePath: string, msg: Discord.Message }): Promise<boolean> {
+    console.log('frying gif')
+    return GifUtil.read(url).then(async gif => {
+        const frames = gif.frames
+        if (frames.length > 10000) {
+            msg.reply('too many frames')
+            return false;
+        }
+        const friedFrames: GifFrame[] = []
+        for (const frame of frames) {
+            const friedJimp = (GifUtil.shareAsJimp(Jimp, frame) as Jimp).quality(20)
+                .contrast(0.7)
+                .posterize(1)
+                .pixelate(1.7)
+            friedFrames.push(new GifFrame(friedJimp.bitmap))
+        }
+        await GifUtil.write(filePath, friedFrames).catch(e => {
+            console.error(e)
+            msg.reply('failed to fry gif')
+            throw e
+        })
+        msg.reply('nice', {
+            files: [filePath]
+        })
 
-    console.log('sending image')
-    msg.reply('nice', {
-        files: [imgPath]
+        return true
     })
-    return;
+
 }
 client.login(process.env.login_key);
