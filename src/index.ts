@@ -137,6 +137,7 @@ async function deepFryImg2({ url, filePath, msg }: { url: string, filePath: stri
     const img = await Canvas.loadImage(url);
     const canvas = Canvas.createCanvas(img.width, img.height);
     const ctx = canvas.getContext('2d');
+    console.log('loaded image, image: ' + JSON.stringify(img))
 
     ctx.drawImage(img, 0, 0, img.width, img.height)
 
@@ -158,13 +159,14 @@ async function deepFryImg2({ url, filePath, msg }: { url: string, filePath: stri
             await this.save(filePath)
         })
     })
-    console.log('finished, file: ' + readFile(filePath, (err, data) => {
+
+    readFile(filePath, (err, data) => {
         if (err) {
             console.log(err)
             return
         }
-        console.log('file buffer:\n\nƒ' + data.toString())
-    }))
+        console.log('fried image, file buffer:\n\nƒ' + data.toString())
+    })
 
     console.log('sending back fried image')
     msg.reply('nice', {
