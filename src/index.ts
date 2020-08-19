@@ -158,6 +158,8 @@ async function deepFryImg2({ url, filePath, msg }: { url: string, filePath: stri
             // @ts-ignore
             await this.save(filePath)
         })
+        // @ts-ignore
+        console.log('this (img?):\n\n\n' + JSON.stringify(this))
     })
 
     readFile(filePath, (err, data) => {
