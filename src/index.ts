@@ -1,13 +1,15 @@
-// const Discord = require('discord.js')
+/* eslint-disable no-undef */
 import Discord, { TextChannel } from 'discord.js'
-import { inspect } from 'util'
-import { readFile } from 'fs'
-const GifEncoder = require('gif-encoder')
-import { GifUtil, GifFrame } from 'gifwrap'
+// import { inspect } from 'util'
 import { extname } from 'path'
 import * as mime from 'mime-types'
 import Jimp from 'jimp'
 import { randomBytes } from 'crypto'
+import * as Canvas from 'canvas'
+import { readFile } from 'fs'
+const Caman = require('caman').Caman
+
+
 const client = new Discord.Client()
 client.on("ready", () => {
     // console.log(`Logged in as ${client.user.tag}!`)
@@ -79,7 +81,7 @@ async function deepFry(msg: Discord.Message) {
     if (mimeType === 'image/gif') {
         await deepfryGif({ url: url, filePath: imgPath, msg: msg })
     } else if (mimeType.toString().includes('image')) {
-        await deepFryImg({ url: url, filePath: imgPath, msg: msg })
+        await deepFryImg2({ url: url, filePath: imgPath, msg: msg })
     } else {
         msg.reply('file type not supported, only support images and gifs')
     }
@@ -93,7 +95,7 @@ async function deepFry(msg: Discord.Message) {
  * @param msg message that sent command
  * @returns whether successfully fried image
  */
-function deepFryImg({ url, filePath, msg }: { url: string, filePath: string, msg: Discord.Message }): Promise<boolean> {
+function _deepFryImg({ url, filePath, msg }: { url: string, filePath: string, msg: Discord.Message }): Promise<boolean> {
     console.log('frying image')
     return Jimp.read(url).
         then(jimage => {
@@ -124,55 +126,49 @@ function deepFryImg({ url, filePath, msg }: { url: string, filePath: string, msg
  * @param msg message that sent command
  * @returns whether successfully fried image
  */
-async function deepfryGif({ url, filePath, msg }: { url: string, filePath: string, msg: Discord.Message }): Promise<boolean> {
-    console.log('frying gif')
-    await Jimp.read(url).
-        then(jimage => {
-            console.log('processing image')
-            jimage
-                .write(filePath)
-            return true;
-        })
-        .catch(err => {
-            console.error(err)
-            msg.reply('something failed homie')
-            return false;
-        })
-    return GifUtil.read(filePath)
-        .then(async gif => {
-            const frames = gif.frames
-            if (frames.length > 1000) {
-                msg.reply('too many frames')
-                return false;
-            }
-            const friedFrames: GifFrame[] = []
-            console.log('total frames: ' + frames.length)
-            for (const frame of frames) {
-                console.log('frying frame')
-                const friedJimp = (GifUtil.shareAsJimp(Jimp, frame) as Jimp).quality(20)
-                    .contrast(0.7)
-                    .posterize(1)
-                    .pixelate(1.7)
-                friedFrames.push(new GifFrame(friedJimp.bitmap))
-            }
-            await GifUtil.write(filePath, friedFrames).then(gif => {
-                console.log('gif:\n' + inspect(gif))
-            }).catch(e => {
-                console.error(e)
-                msg.reply('failed to fry gif')
-                throw e
-            })
-            console.log('replying with gif')
-            msg.reply('nice', {
-                files: [filePath]
-            })
-            return true
-        })
-        .catch(e => {
-            console.log(e)
-            msg.reply('failed to fry gif')
-            return false
-        })
-
+function deepfryGif({ url, filePath, msg }: { url: string, filePath: string, msg: Discord.Message }): boolean {
+    return true
 }
 client.login(process.env.login_key);
+
+
+async function deepFryImg2({ url, filePath, msg }: { url: string, filePath: string, msg: Discord.Message }) {
+
+    const img = await Canvas.loadImage(url);
+    const canvas = Canvas.createCanvas(img.width, img.height);
+    const ctx = canvas.getContext('2d');
+
+    ctx.drawImage(img, 0, 0, img.width, img.height)
+
+    console.log('img.src: ' + img.src)
+    await Caman(img.src, async () => {
+        // @ts-ignore
+        this.brightness(50); // -100 to 100
+        // @ts-ignore
+        this.contrast(50); // -100 to 100
+        // @ts-ignore
+        this.saturation(50); // -100 to 100
+        // @ts-ignore
+        this.sharpen(50); // -100 to 100
+        // @ts-ignore
+        this.noise(10); // 0 to 100
+        // @ts-ignore
+        this.render(async () => {
+            // @ts-ignore
+            await this.save(filePath)
+        })
+    })
+    console.log('finished, file: ' + readFile(filePath, (err, data) => {
+        if (err) {
+            console.log(err)
+            return
+        }
+        console.log('file buffer:\n\nƒ' + data.toString())
+    }))
+
+    console.log('sending back fried image')
+    msg.reply('nice', {
+        files: [filePath]
+    })
+
+}
