@@ -134,43 +134,61 @@ client.login(process.env.login_key);
 
 async function deepFryImg2({ url, filePath, msg }: { url: string, filePath: string, msg: Discord.Message }) {
 
-    const img = await Canvas.loadImage(url);
-    const canvas = Canvas.createCanvas(img.width, img.height);
-    const ctx = canvas.getContext('2d');
-    console.log('loaded image, image: ' + JSON.stringify(img))
+    // let img
+    await Canvas.loadImage(url)
+        .then(async img => {
+            img = img
 
-    ctx.drawImage(img, 0, 0, img.width, img.height)
 
-    console.log('img.src: ' + img.src)
-    await Caman(img.src, async () => {
-        // @ts-ignore
-        this.brightness(50); // -100 to 100
-        // @ts-ignore
-        this.contrast(50); // -100 to 100
-        // @ts-ignore
-        this.saturation(50); // -100 to 100
-        // @ts-ignore
-        this.sharpen(50); // -100 to 100
-        // @ts-ignore
-        this.noise(10); // 0 to 100
-        // @ts-ignore
-        this.render(async () => {
-            // @ts-ignore
-            await this.save(filePath)
+
+
+
+            const canvas = Canvas.createCanvas(img.width, img.height);
+            const ctx = canvas.getContext('2d');
+            console.log('loaded image, image: ' + JSON.stringify(img))
+
+            ctx.drawImage(img, 0, 0, img.width, img.height)
+
+            console.log('img.src: ' + img.src)
+            await Caman(img.src, async () => {
+                // @ts-ignore
+                this.brightness(50); // -100 to 100
+                // @ts-ignore
+                this.contrast(50); // -100 to 100
+                // @ts-ignore
+                this.saturation(50); // -100 to 100
+                // @ts-ignore
+                this.sharpen(50); // -100 to 100
+                // @ts-ignore
+                this.noise(10); // 0 to 100
+                // @ts-ignore
+                this.render(async () => {
+                    // @ts-ignore
+                    await this.save(filePath)
+                })
+            })
+
+            readFile(filePath, (err, data) => {
+                if (err) {
+                    console.log(err)
+                    return
+                }
+                console.log('fried image, file buffer:\n\nƒ' + data.toString())
+            })
+
+            console.log('sending back fried image')
+            msg.reply('nice', {
+                files: [filePath]
+            })
+
+
+
+
+
         })
-    })
-
-    readFile(filePath, (err, data) => {
-        if (err) {
-            console.log(err)
-            return
-        }
-        console.log('fried image, file buffer:\n\nƒ' + data.toString())
-    })
-
-    console.log('sending back fried image')
-    msg.reply('nice', {
-        files: [filePath]
-    })
+        .catch(e => {
+            console.error(e)
+            return;
+        });
 
 }
