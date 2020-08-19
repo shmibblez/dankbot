@@ -7,8 +7,7 @@ import Jimp from 'jimp'
 import { randomBytes } from 'crypto'
 import * as Canvas from 'canvas'
 import { readFile } from 'fs'
-const Caman = require('caman').Caman
-
+import { fabric } from 'fabric'
 
 const client = new Discord.Client()
 client.on("ready", () => {
@@ -81,7 +80,7 @@ async function deepFry(msg: Discord.Message) {
     if (mimeType === 'image/gif') {
         await deepfryGif({ url: url, filePath: imgPath, msg: msg })
     } else if (mimeType.toString().includes('image')) {
-        await deepFryImg2({ url: url, filePath: imgPath, msg: msg })
+        await _deepFryImg({ url: url, filePath: imgPath, msg: msg })
     } else {
         msg.reply('file type not supported, only support images and gifs')
     }
@@ -134,33 +133,46 @@ client.login(process.env.login_key);
 
 async function deepFryImg2({ url, filePath, msg }: { url: string, filePath: string, msg: Discord.Message }) {
 
-    const img = await Canvas.loadImage(url);
-    const canvas = Canvas.createCanvas(img.width, img.height);
-    const ctx = canvas.getContext('2d');
-    console.log('loaded image, image: ' + JSON.stringify(img))
+    // TODO: use fabric.js
 
-    ctx.drawImage(img, 0, 0, img.width, img.height)
+    //.
+    // const img = await Canvas.loadImage(url);
+    // const canvas = Canvas.createCanvas(img.width, img.height);
+    // const ctx = canvas.getContext('2d');
+    // console.log('loaded image, image: ' + JSON.stringify(img))
+
+    // ctx.drawImage(img, 0, 0, img.width, img.height)
+
+    const canvas = new fabric.Canvas('c')
 
     // console.log('img.src: ' + img.src)
-    await Caman(canvas, async () => {
-        // @ts-ignore
-        console.log('this (img?):\n\n\n' + JSON.stringify(this))
-        // @ts-ignore
-        this.brightness(50); // -100 to 100
-        // @ts-ignore
-        this.contrast(50); // -100 to 100
-        // @ts-ignore
-        this.saturation(50); // -100 to 100
-        // @ts-ignore
-        this.sharpen(50); // -100 to 100
-        // @ts-ignore
-        this.noise(10); // 0 to 100
-        // @ts-ignore
-        await this.render(async () => {
-            // @ts-ignore
-            await this.save(filePath)
-        })
-    })
+    // await Caman(canvas, async () => {
+    //     // @ts-ignore
+    //     console.log('this (img?):\n\n\n' + JSON.stringify(this))
+    //     // @ts-ignore
+    //     this.brightness(50); // -100 to 100
+    //     // @ts-ignore
+    //     this.contrast(50); // -100 to 100
+    //     // @ts-ignore
+    //     this.saturation(50); // -100 to 100
+    //     // @ts-ignore
+    //     this.sharpen(50); // -100 to 100
+    //     // @ts-ignore
+    //     this.noise(10); // 0 to 100
+    //     // @ts-ignore
+    //     await this.render(async () => {
+    //         // @ts-ignore
+    //         await this.save(filePath)
+    //     })
+    // })
+
+    // fabric.Image.fromURL(url, (img) => {
+    //     img.filters?.push(new fabric.Image.filters.Brightness({ brightness: 100 }))
+    //     img.filters?.push(new fabric.Image.filters.Contrast({ contrast: 0.25 })
+
+    //     // img.applyFilters();
+    //     // canvas.add(img)
+    // })
 
     readFile(filePath, (err, data) => {
         if (err) {

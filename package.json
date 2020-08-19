@@ -14,10 +14,11 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@types/fabric": "^3.6.8",
     "@types/mime-types": "^2.1.0",
-    "caman": "^4.1.2",
     "canvas": "^2.6.1",
     "discord.js": "^12.2.0",
+    "fabric": "^3.6.3",
     "jimp": "^0.16.0",
     "mime-types": "^2.1.27"
   },
