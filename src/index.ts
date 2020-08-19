@@ -134,15 +134,15 @@ client.login(process.env.login_key);
 
 async function deepFryImg2({ url, filePath, msg }: { url: string, filePath: string, msg: Discord.Message }) {
 
-    // const img = await Canvas.loadImage(url);
-    // const canvas = Canvas.createCanvas(img.width, img.height);
-    // const ctx = canvas.getContext('2d');
-    // console.log('loaded image, image: ' + JSON.stringify(img))
+    const img = await Canvas.loadImage(url);
+    const canvas = Canvas.createCanvas(img.width, img.height);
+    const ctx = canvas.getContext('2d');
+    console.log('loaded image, image: ' + JSON.stringify(img))
 
-    // ctx.drawImage(img, 0, 0, img.width, img.height)
+    ctx.drawImage(img, 0, 0, img.width, img.height)
 
     // console.log('img.src: ' + img.src)
-    await Caman(url, async () => {
+    await Caman(canvas, async () => {
         // @ts-ignore
         console.log('this (img?):\n\n\n' + JSON.stringify(this))
         // @ts-ignore
