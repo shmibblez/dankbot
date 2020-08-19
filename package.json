@@ -16,7 +16,7 @@
   "dependencies": {
     "@types/mime-types": "^2.1.0",
     "caman": "^4.1.2",
-    "canvas": "^2.6.1",
+    "canvas": "~1.6.1",
     "discord.js": "^12.2.0",
     "jimp": "^0.16.0",
     "mime-types": "^2.1.27"
