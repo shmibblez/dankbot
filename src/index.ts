@@ -144,6 +144,8 @@ async function deepFryImg2({ url, filePath, msg }: { url: string, filePath: stri
     // console.log('img.src: ' + img.src)
     await Caman(url, async () => {
         // @ts-ignore
+        console.log('this (img?):\n\n\n' + JSON.stringify(this))
+        // @ts-ignore
         this.brightness(50); // -100 to 100
         // @ts-ignore
         this.contrast(50); // -100 to 100
@@ -154,12 +156,10 @@ async function deepFryImg2({ url, filePath, msg }: { url: string, filePath: stri
         // @ts-ignore
         this.noise(10); // 0 to 100
         // @ts-ignore
-        this.render(async () => {
+        await this.render(async () => {
             // @ts-ignore
             await this.save(filePath)
         })
-        // @ts-ignore
-        console.log('this (img?):\n\n\n' + JSON.stringify(this))
     })
 
     readFile(filePath, (err, data) => {
