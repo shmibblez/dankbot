@@ -12,6 +12,7 @@ client.on("ready", () => {
     // console.log(`Logged in as ${client.user.tag}!`)
     return Promise.resolve()
 })
+
 // TODO: fry images in fryer, return file path, and send reply with deep-fried images here
 client.on("message", async msg => {
     if (!msg.content.startsWith('!dankbot')) return;
