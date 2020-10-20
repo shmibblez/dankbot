@@ -5,15 +5,14 @@ import { extname } from 'path'
 import * as mime from 'mime-types'
 import Jimp from 'jimp'
 import { randomBytes } from 'crypto'
-import * as Canvas from 'canvas'
 import { readFile } from 'fs'
-import { fabric } from 'fabric'
 
 const client = new Discord.Client()
 client.on("ready", () => {
     // console.log(`Logged in as ${client.user.tag}!`)
     return Promise.resolve()
 })
+// TODO: fry images in fryer, return file path, and send reply with deep-fried images here
 client.on("message", async msg => {
     if (!msg.content.startsWith('!dankbot')) return;
     if (msg.channel.type != 'text') return;
@@ -128,63 +127,9 @@ function _deepFryImg({ url, filePath, msg }: { url: string, filePath: string, ms
 function deepfryGif({ url, filePath, msg }: { url: string, filePath: string, msg: Discord.Message }): boolean {
     return true
 }
+
+
+
+
+
 client.login(process.env.login_key);
-
-
-async function deepFryImg2({ url, filePath, msg }: { url: string, filePath: string, msg: Discord.Message }) {
-
-    // TODO: use fabric.js
-
-    //.
-    // const img = await Canvas.loadImage(url);
-    // const canvas = Canvas.createCanvas(img.width, img.height);
-    // const ctx = canvas.getContext('2d');
-    // console.log('loaded image, image: ' + JSON.stringify(img))
-
-    // ctx.drawImage(img, 0, 0, img.width, img.height)
-
-    const canvas = new fabric.Canvas('c')
-
-    // console.log('img.src: ' + img.src)
-    // await Caman(canvas, async () => {
-    //     // @ts-ignore
-    //     console.log('this (img?):\n\n\n' + JSON.stringify(this))
-    //     // @ts-ignore
-    //     this.brightness(50); // -100 to 100
-    //     // @ts-ignore
-    //     this.contrast(50); // -100 to 100
-    //     // @ts-ignore
-    //     this.saturation(50); // -100 to 100
-    //     // @ts-ignore
-    //     this.sharpen(50); // -100 to 100
-    //     // @ts-ignore
-    //     this.noise(10); // 0 to 100
-    //     // @ts-ignore
-    //     await this.render(async () => {
-    //         // @ts-ignore
-    //         await this.save(filePath)
-    //     })
-    // })
-
-    // fabric.Image.fromURL(url, (img) => {
-    //     img.filters?.push(new fabric.Image.filters.Brightness({ brightness: 100 }))
-    //     img.filters?.push(new fabric.Image.filters.Contrast({ contrast: 0.25 })
-
-    //     // img.applyFilters();
-    //     // canvas.add(img)
-    // })
-
-    readFile(filePath, (err, data) => {
-        if (err) {
-            console.log(err)
-            return
-        }
-        console.log('fried image, file buffer:\n\nƒ' + data.toString())
-    })
-
-    console.log('sending back fried image')
-    msg.reply('nice', {
-        files: [filePath]
-    })
-
-}
