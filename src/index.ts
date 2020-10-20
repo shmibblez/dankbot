@@ -6,6 +6,8 @@ import * as mime from 'mime-types'
 import Jimp from 'jimp'
 import { randomBytes } from 'crypto'
 import { readFile } from 'fs'
+import dotenv from 'dotenv'
+dotenv.config()
 
 const client = new Discord.Client()
 client.on("ready", () => {
