@@ -136,5 +136,4 @@ function deepfryGif({ url, filePath, msg }: { url: string, filePath: string, msg
 
 
 
-client.login(process.env.login_key);
-console.log('----------------------------login key: ' + process.env.login_key)
+client.login(process.env.dankbot_login_key);
