@@ -45,7 +45,7 @@ async function deepFry(msg: Discord.Message) {
     console.log('getting messages')
     const messages = await msg.channel.messages.fetch({ limit: 10 }, false)
     // await msg.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ['time'] })
-    let name: string | undefined
+    let name: string | null | undefined
     let url: string | undefined | null;
     for (const m of messages) {
         url = m[1].attachments?.first()?.url

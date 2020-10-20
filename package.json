@@ -1,5 +1,5 @@
 {
-  "name": "dankify-bot",
+  "name": "dankbot",
   "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
@@ -17,13 +17,13 @@
     "@types/fabric": "^3.6.8",
     "@types/mime-types": "^2.1.0",
     "canvas": "^2.6.1",
-    "discord.js": "^12.2.0",
-    "fabric": "^3.6.3",
-    "jimp": "^0.16.0",
+    "discord.js": "^12.4.0",
+    "fabric": "^3.6.6",
+    "jimp": "^0.16.1",
     "mime-types": "^2.1.27"
   },
   "devDependencies": {
-    "@types/node": "^14.0.27",
+    "@types/node": "^14.14.0",
     "typescript": "^3.9.7"
   }
 }
