@@ -15,7 +15,7 @@ export class Dankbot {
     }
 
     static async onMessage(msg: Discord.Message) {
-        if (!msg.content.startsWith('.dank')) return;
+        if (!msg.content.startsWith('.db')) return;
         const commands = msg.content.split(' ');
         switch (commands[1]) {
             case 'fry':
