@@ -24,18 +24,6 @@ export class LittleHomie {
         return [success, memes[0]]
     }
 
-    static async sendMemes(msg: Discord.Message) {
-        const [success, memes] = await Scraper.cuantoCabronAleatorio()
-        for (const m of memes) {
-            let embed = new Discord.MessageEmbed()
-                .setTitle(m.title)
-                .setURL(m.pgUrl)
-                .setColor('#ff0000')
-                .setImage(m.imgUrl)
-            await msg.channel.send(embed)
-        }
-    }
-
 }
 
 /**
