@@ -6,10 +6,17 @@ import { strict } from 'assert'
 // TODO: add comments and likes
 type meme = { title: string, imgUrl: string, pgUrl: string }
 /**
- * helps el chingon handle url storage, retrieval, and generation (when to get/scrape more)
+ * helps el chingon handle:
+ * - url storage (adds url to db),
+ * - retrieval (gets url from db)
+ * - and generation (when to get/scrape more, and a cycle with db)
+ * 
+ * db (database) is discord message where el chingon stores meme objects
+ * and index of each server's memes so they get a fresh one every time 
  */
 export class LittleHomie {
 
+    // TODO: store urls in discord, and download file instead of sending url (takes longer to load in app)
     static async getMeme(): Promise<[boolean, meme]> {
         // handle stored urls here and individual server indexes
         const [success, memes] = await Scraper.cuantoCabronAleatorio()
