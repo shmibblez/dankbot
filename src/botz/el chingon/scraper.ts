@@ -2,6 +2,7 @@ import fetch from 'node-fetch'
 import ch from 'cheerio'
 import { inspect } from 'util'
 import { strict } from 'assert'
+import Discord from 'discord.js'
 
 // TODO: add comments and likes
 type meme = { title: string, imgUrl: string, pgUrl: string }
@@ -21,6 +22,18 @@ export class LittleHomie {
         // handle stored urls here and individual server indexes
         const [success, memes] = await Scraper.cuantoCabronAleatorio()
         return [success, memes[0]]
+    }
+
+    static async sendMemes(msg: Discord.Message) {
+        const [success, memes] = await Scraper.cuantoCabronAleatorio()
+        for (const m of memes) {
+            let embed = new Discord.MessageEmbed()
+                .setTitle(m.title)
+                .setURL(m.pgUrl)
+                .setColor('#ff0000')
+                .setImage(m.imgUrl)
+            await msg.channel.send(embed)
+        }
     }
 
 }

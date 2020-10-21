@@ -35,12 +35,13 @@ no se preocupen que llegara pronto...
                     msg.reply('algo fallo pinche guey! pero tranquilo que no fue mi culpa')
                     return
                 }
-                const embed = new Discord.MessageEmbed()
-                    .setTitle(meme.title)
-                    .setURL(meme.pgUrl)
-                    .setColor('#ff0000')
-                    .setImage(meme.imgUrl)
-                await msg.channel.send(embed)
+                // let embed = new Discord.MessageEmbed()
+                //     .setTitle(meme.title)
+                //     .setURL(meme.pgUrl)
+                //     .setColor('#ff0000')
+                //     .setImage(meme.imgUrl)
+                // await msg.channel.send(embed)
+                LittleHomie.sendMemes(msg)
                 break;
             case 'fritar':
                 await msg.reply('sorry homes, no esta listo todavia!')
