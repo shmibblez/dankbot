@@ -1,4 +1,5 @@
 import Discord from 'discord.js'
+import { LittleHomie } from './scraper'
 
 export class ElChingon {
 
@@ -29,14 +30,24 @@ no se preocupen que llegara pronto...
         const commands = msg.content.split(' ');
         switch (commands[1]) {
             case 'meme':
-                msg.reply('sorry homes, no esta listo todavia!')
+                const [success, meme] = await LittleHomie.getMeme()
+                if (!success) {
+                    msg.reply('algo fallo pinche guey! pero tranquilo que no fue mi culpa')
+                    return
+                }
+                const embed = new Discord.MessageEmbed()
+                    .setTitle(meme.title)
+                    .setURL(meme.pgUrl)
+                    .setColor('#ff0000')
+                    .setImage(meme.imgUrl)
+                await msg.channel.send(embed)
                 break;
             case 'fritar':
-                msg.reply('sorry homes, no esta listo todavia!')
+                await msg.reply('sorry homes, no esta listo todavia!')
                 break;
             default:
             case 'ayuda':
-                msg.reply(ElChingon.help)
+                await msg.reply(ElChingon.help)
                 break;
         }
     }

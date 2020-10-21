@@ -54,7 +54,7 @@ export class Fryer {
 
         // TODO: split gif into frames, fry, then combine again, might need to first convert gif into supported format
 
-        return [true, '[file path]']
+        return [false, 'orale chingon! todavaia me queda grande fritar gifs!']
     }
 
 }

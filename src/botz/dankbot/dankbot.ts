@@ -23,7 +23,7 @@ export class Dankbot {
                 break;
             default:
             case 'help':
-                msg.reply('whats good homie' +
+                await msg.reply('whats good homie' +
                     // '\n\ncommands are seperated by spaces, for example: \n`!dankbot fry brutal` deepfries the latest picture in the chat brutally' +
                     '\n\ncommands are seperated by spaces, for example: \n`!dankbot fry brutal` deepfries the latest picture in the chat brutally' +
                     '\nhere are some commands:' +
@@ -69,11 +69,11 @@ export class Dankbot {
         console.log('attempting deepfry')
         const [success, filePath] = await Fryer.fry({ url: url ?? '' })
         if (success) {
-            msg.reply('nice', {
+            await msg.reply('nice', {
                 files: [filePath]
             })
         } else {
-            msg.reply('something went wrong, but don\'t worry, it wasn\'t my fault')
+            await msg.reply('something went wrong, but don\'t worry, it wasn\'t my fault')
         }
     }
 
