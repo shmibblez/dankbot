@@ -6,10 +6,10 @@ export class ElChingon {
     static get help() {
         return `
 hola cabrones! si quieren me pueden pedir memes, o con la ayuda de mi amigo dankbot les puedo fritar un meme tambien!
-- para pedir memes no es mas que escribir: \`.gon meme\`, y changale que les envio un meme! (todavia no esta listo)
+- para pedir memes no es mas que escribir: \`.gon meme\`, y changale que les envio un meme!
 - para fritar memes nomas tienen que escribir: \`.gon fritar\` (todavia no esta listo)
 
-me disculpo que nada funcione todavia, pero todo chingon necesita dias de descanso!
+me disculpo que no pueda fritar memes todavia, pero todo chingon necesita dias de descanso!
 no se preocupen que llegara pronto...
 `
     }
