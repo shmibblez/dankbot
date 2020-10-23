@@ -15,4 +15,4 @@ elCabron.login(process.env.el_chingon_login_key);
 // TODO
 // 
 // PROBLEMS
-// - dankbot can't fry memes retrieved by el_chingon
+// - dankbot can't fry memes retrieved by el_chingon, might be because image url doesn't end in .jpg but with .jpgc?=[other stuff], or something like that

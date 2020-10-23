@@ -26,7 +26,7 @@ no se preocupen que llegara pronto...
     }
 
     static async onMessage(msg: Discord.Message) {
-        if (!msg.content.startsWith('.gon')) return;
+        if (!msg.content.startsWith('.ron')) return;
         const commands = msg.content.split(' ');
         switch (commands[1]) {
             case 'meme':
